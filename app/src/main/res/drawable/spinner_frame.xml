@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<selector xmlns:android = "http://schemas.android.com/apk/res/android">
+
+    <item android:state_focused="false">
+        <layer-list>
+            <item>
+                <shape android:thickness="2dp">
+                    <solid android:color="@color/colorTextboxUnfocused" />
+                    <stroke android:width = "2dp" android:color = "@color/colorStrokeSpinner"/>
+                    <padding android:bottom = "3dp" android:left = "3dp" android:right = "3dp" android:top = "3dp"/>
+                </shape>
+            </item>
+
+            <!--<item>-->
+                <!--<rotate-->
+                    <!--android:fromDegrees = "90"-->
+                    <!--android:pivotX = "85%"-->
+                    <!--android:pivotY = "50%"-->
+                    <!--android:toDegrees = "90">-->
+                    <!--<shape-->
+                        <!--android:shape = "line"-->
+                        <!--android:thickness="2dp"-->
+                        <!--android:top = "1dp">-->
+                        <!--<stroke-->
+                            <!--android:color="#80000000"-->
+                            <!--android:width = "1dp"/>-->
+                    <!--</shape>-->
+                <!--</rotate>-->
+            <!--</item>-->
+
+            <item>
+                <bitmap
+
+                    android:gravity = "center|right" android:src = "@mipmap/ic_arrow_drop_down_black"/>
+
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_focused="true">
+        <layer-list>
+            <item>
+                <shape android:thickness="2dp">
+                    <solid android:color="@color/colorTextboxFocused" />
+                    <stroke android:width = "2dp" android:color = "@color/colorStrokeSpinner"/>
+                    <padding android:bottom = "3dp" android:left = "3dp" android:right = "3dp" android:top = "3dp"/>
+                </shape>
+            </item>
+
+            <!--<item>-->
+            <!--<rotate-->
+            <!--android:fromDegrees = "90"-->
+            <!--android:pivotX = "85%"-->
+            <!--android:pivotY = "50%"-->
+            <!--android:toDegrees = "90">-->
+            <!--<shape-->
+            <!--android:shape = "line"-->
+            <!--android:thickness="2dp"-->
+            <!--android:top = "1dp">-->
+            <!--<stroke-->
+            <!--android:color="#80000000"-->
+            <!--android:width = "1dp"/>-->
+            <!--</shape>-->
+            <!--</rotate>-->
+            <!--</item>-->
+
+            <item>
+                <bitmap
+
+                    android:gravity = "center|right" android:src = "@mipmap/ic_arrow_drop_down_black"/>
+
+            </item>
+        </layer-list>
+    </item>
+</selector>

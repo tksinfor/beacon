@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize">
+
+        <android.support.constraint.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/content_customer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context="com.ik9.beacon.activity.CustomerActivity"
+            tools:showIn="@layout/activity_customer">
+
+            <ImageView
+                android:id="@+id/imgPhoto"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/imageview_frame"
+                android:cropToPadding="true"
+                android:scaleType="centerCrop"
+                app:layout_constraintLeft_toLeftOf="@+id/content_customer"
+                app:layout_constraintRight_toRightOf="@+id/content_customer"
+                app:layout_constraintTop_toTopOf="@+id/content_customer" />
+
+
+            <!--Name-->
+
+            <TextView
+                android:id="@+id/lblName"
+                android:layout_width="90dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/label_frame"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:text="Nome"
+                android:textColor="@color/colorLabelText"
+                android:textSize="@dimen/tvwCustomerLabelTextSize"
+                app:layout_constraintLeft_toLeftOf="@+id/content_customer"
+                app:layout_constraintTop_toBottomOf="@+id/imgPhoto" />
+
+            <EditText
+                android:id="@+id/txtName"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/textbox_frame"
+                android:inputType="textPersonName|textCapCharacters"
+                android:maxLength="120"
+                android:textSize="@dimen/edit_text_font_size"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toRightOf="@+id/lblName"
+                app:layout_constraintRight_toRightOf="@+id/content_customer"
+                app:layout_constraintTop_toBottomOf="@+id/imgPhoto" />
+
+
+            <!--Email-->
+
+            <TextView
+                android:id="@+id/lblEmail"
+                android:layout_width="90dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/label_frame"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:text="E-mail"
+                android:textColor="@color/colorLabelText"
+                android:textSize="@dimen/tvwCustomerLabelTextSize"
+                app:layout_constraintLeft_toLeftOf="@+id/content_customer"
+                app:layout_constraintTop_toBottomOf="@+id/lblBirth" />
+
+            <EditText
+                android:id="@+id/txtEmail"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/textbox_frame"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:maxLength="100"
+                android:textSize="@dimen/edit_text_font_size"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintLeft_toRightOf="@+id/lblEmail"
+                app:layout_constraintRight_toRightOf="@+id/content_customer"
+                app:layout_constraintTop_toBottomOf="@+id/cmbGender" />
+
+
+            <!--Birth-->
+
+            <TextView
+                android:id="@+id/lblBirth"
+                android:layout_width="90dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/label_frame"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:text="Nascimento"
+                android:textColor="@color/colorLabelText"
+                android:textSize="@dimen/tvwCustomerLabelTextSize"
+                app:layout_constraintLeft_toLeftOf="@+id/content_customer"
+                app:layout_constraintTop_toBottomOf="@+id/lblName" />
+
+            <EditText
+                android:id="@+id/txtBirth"
+                android:layout_width="100dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/textbox_frame"
+                android:ems="10"
+                android:inputType="text|date"
+                android:maxLength="10"
+                android:textSize="@dimen/edit_text_font_size"
+                app:layout_constraintLeft_toRightOf="@+id/lblBirth"
+                app:layout_constraintTop_toBottomOf="@+id/txtName" />
+
+
+            <!--Gender-->
+
+            <TextView
+                android:id="@+id/lblGender"
+                android:layout_width="90dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/label_frame"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:text="Gênero"
+                android:textColor="@color/colorLabelText"
+                android:textSize="@dimen/tvwCustomerLabelTextSize"
+                app:layout_constraintLeft_toRightOf="@+id/txtBirth"
+                app:layout_constraintTop_toBottomOf="@+id/txtName" />
+
+            <Spinner
+                android:id="@+id/cmbGender"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/spinner_frame"
+                app:layout_constraintLeft_toRightOf="@+id/lblGender"
+                app:layout_constraintRight_toRightOf="@+id/content_customer"
+                app:layout_constraintTop_toBottomOf="@+id/txtName" />
+
+
+            <!--Phone-->
+
+            <TextView
+                android:id="@+id/lblPhone"
+                android:layout_width="90dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/label_frame"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:text="Telefone"
+                android:textColor="@color/colorLabelText"
+                android:textSize="@dimen/tvwCustomerLabelTextSize"
+                app:layout_constraintLeft_toLeftOf="@+id/content_customer"
+                app:layout_constraintTop_toBottomOf="@+id/lblEmail" />
+
+            <EditText
+                android:id="@+id/txtPhone"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/textbox_frame"
+                android:ems="10"
+                android:inputType="text|phone"
+                android:maxLength="11"
+                android:textSize="@dimen/edit_text_font_size"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toRightOf="@+id/lblPhone"
+                app:layout_constraintRight_toRightOf="@+id/content_customer"
+                app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+
+
+            <!--City-->
+
+            <TextView
+                android:id="@+id/lblCity"
+                android:layout_width="90dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/label_frame"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:text="Cidade"
+                android:textColor="@color/colorLabelText"
+                android:textSize="@dimen/tvwCustomerLabelTextSize"
+                app:layout_constraintLeft_toLeftOf="@+id/content_customer"
+                app:layout_constraintTop_toBottomOf="@+id/lblPhone" />
+
+            <EditText
+                android:id="@+id/txtCity"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/textbox_frame"
+                android:inputType="text|textCapCharacters"
+                android:ems="10"
+                android:maxLength="50"
+                android:textSize="@dimen/edit_text_font_size"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toRightOf="@+id/lblCity"
+                app:layout_constraintRight_toRightOf="@+id/content_customer"
+                app:layout_constraintTop_toBottomOf="@+id/txtPhone" />
+
+
+            <!--State-->
+
+            <TextView
+                android:id="@+id/lblState"
+                android:layout_width="90dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/label_frame"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:text="Estado"
+                android:textColor="@color/colorLabelText"
+                android:textSize="@dimen/tvwCustomerLabelTextSize"
+                app:layout_constraintLeft_toLeftOf="@+id/content_customer"
+                app:layout_constraintTop_toBottomOf="@+id/lblCity" />
+
+            <Spinner
+                android:id="@+id/cmbState"
+                android:layout_width="100dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/spinner_frame"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toRightOf="@+id/lblState"
+                app:layout_constraintRight_toRightOf="@+id/content_customer"
+                app:layout_constraintTop_toBottomOf="@+id/txtCity" />
+
+
+            <!--<Button-->
+            <!--android:id="@+id/btnPhoto"-->
+            <!--android:layout_width="150dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:background="@drawable/button_a_frame"-->
+            <!--android:text="ESCOLHER FOTO"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--app:layout_constraintLeft_toLeftOf="@+id/content_customer"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/imgPhoto"-->
+            <!--app:layout_constraintRight_toRightOf="@+id/content_customer" />-->
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>
+

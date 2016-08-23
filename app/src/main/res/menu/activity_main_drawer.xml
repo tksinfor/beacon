@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<group android:checkableBehavior="single">-->
+    <item android:title="Geral">
+        <menu>
+        <item
+        android:id="@+id/nav_perfil"
+        android:icon="@drawable/ic_menu_perfil"
+        android:title="Perfil" />
+
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Configurações" />
+            </menu>
+    </item>
+    <!--</group>-->
+
+    <item android:title="Comunicação">
+        <menu>
+            <!--<item-->
+                <!--android:id="@+id/nav_share"-->
+                <!--android:icon="@drawable/ic_menu_share"-->
+                <!--android:title="Compartilhar" />-->
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Chat" />
+            <item
+                android:id="@+id/nav_phone"
+                android:icon="@drawable/ic_call_black_18dp"
+                android:title="Telefones" />
+            <item
+                android:id="@+id/nav_email"
+                android:icon="@drawable/ic_mail_outline_black_18dp"
+                android:title="E-mail" />
+        </menu>
+    </item>
+
+</menu>
