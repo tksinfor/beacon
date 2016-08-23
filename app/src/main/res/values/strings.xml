@@ -91,7 +91,7 @@
 
     <string name="facebook_app_id">fb638701279612493</string>
 
-    <string name="kontakt_api_key">qnMhHbmBkoSPHogVKbKClhWEQhVTRdCa</string>
+    <string name="kontakt_io_api_key">qnMhHbmBkoSPHogVKbKClhWEQhVTRdCa</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="send">Enviar</string>

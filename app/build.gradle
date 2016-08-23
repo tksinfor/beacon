@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    //kontakt - Some configurations may also need an additional exclusion:
+//    packagingOptions {
+//        exclude 'main/AndroidManifest.xml'
+//    }
 }
 
 dependencies {
@@ -29,4 +33,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
     compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile 'com.google.android.gms:play-services:9.4.0'
+    compile 'com.kontaktio:sdk:3.0.0'
 }
+

@@ -46,9 +46,33 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.kontakt.sdk.android.ble.configuration.ActivityCheckConfiguration;
+import com.kontakt.sdk.android.ble.configuration.ScanPeriod;
+import com.kontakt.sdk.android.ble.configuration.scan.ScanMode;
+import com.kontakt.sdk.android.ble.connection.OnServiceReadyListener;
+import com.kontakt.sdk.android.ble.device.BeaconRegion;
+import com.kontakt.sdk.android.ble.device.EddystoneDevice;
+import com.kontakt.sdk.android.ble.discovery.eddystone.EddystoneTLMAdvertisingPacket;
+import com.kontakt.sdk.android.ble.discovery.eddystone.EddystoneUIDAdvertisingPacket;
+import com.kontakt.sdk.android.ble.filter.eddystone.TLMFilter;
+import com.kontakt.sdk.android.ble.filter.eddystone.UIDFilter;
+import com.kontakt.sdk.android.ble.filter.ibeacon.IBeaconFilters;
+import com.kontakt.sdk.android.ble.manager.ProximityManager;
+import com.kontakt.sdk.android.ble.manager.ProximityManagerContract;
+import com.kontakt.sdk.android.ble.manager.listeners.EddystoneListener;
+import com.kontakt.sdk.android.ble.manager.listeners.IBeaconListener;
+import com.kontakt.sdk.android.ble.manager.listeners.simple.SimpleEddystoneListener;
+import com.kontakt.sdk.android.ble.manager.listeners.simple.SimpleIBeaconListener;
+import com.kontakt.sdk.android.common.KontaktSDK;
+import com.kontakt.sdk.android.common.profile.IBeaconDevice;
+import com.kontakt.sdk.android.common.profile.IBeaconRegion;
+import com.kontakt.sdk.android.common.profile.IEddystoneDevice;
+import com.kontakt.sdk.android.common.profile.IEddystoneNamespace;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static com.ik9.beacon.activity.Ik9BeaconApplication.profileEntity;
 import static com.ik9.beacon.activity.Ik9BeaconApplication.profileFacebook;
@@ -68,6 +92,7 @@ public class MainActivity extends AppCompatActivity
     private CallbackManager callbackManager;
     private GoogleApiClient client;
     private ProfileTracker profileTracker;
+    private ProximityManagerContract proximityManager;
 
     public MainActivity() {
     }
@@ -97,6 +122,15 @@ public class MainActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
 
+        KontaktSDK.initialize(this);
+
+        proximityManager = new ProximityManager(this);
+        configureProximityManager();
+        configureListeners();
+        configureSpaces();
+        configureFilters();
+
+
         if (savedInstanceState != null) {
             userSkippedLogin = savedInstanceState.getBoolean(USER_SKIPPED_LOGIN_KEY);
         }
@@ -107,7 +141,6 @@ public class MainActivity extends AppCompatActivity
 
         Ik9BeaconApplication.profileTracker = new ProfileTrackerMethod();
         accessTokenTracker = new AccessTokenTrackerMethod();
-
 
         setContentView(R.layout.activity_main);
 
@@ -138,6 +171,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
+        proximityManager.disconnect();
+        proximityManager = null;
         super.onDestroy();
         accessTokenTracker.stopTracking();
     }
@@ -209,7 +244,6 @@ public class MainActivity extends AppCompatActivity
 
         CallChains();
 
-        checkBeacon();
         checkBluetooth();
         checkWiFi();
     }
@@ -225,7 +259,8 @@ public class MainActivity extends AppCompatActivity
     public void onStart() {
         super.onStart();
 
-        checkBeacon();
+        startScanning();
+
         checkBluetooth();
         checkWiFi();
 
@@ -238,6 +273,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onStop() {
+        proximityManager.stopScanning();
         super.onStop();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -250,10 +286,6 @@ public class MainActivity extends AppCompatActivity
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.disconnect();
-    }
-
-    private void checkBeacon() {
-
     }
 
     private void checkBluetooth() {
@@ -291,20 +323,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void connectToService() {
-//        beaconManager.connect(new ServiceReadyCallback() {
-//            @Override
-//            public void onServiceReady() {
-//                try {
-//                    beaconManager.startRangingAndDiscoverDevice(ALL_BEACONS_REGION);
-//                } catch (RemoteException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-    }
-
     private void choosePhoneNumber() {
         AlertDialog.Builder choosePhoneNumber = new AlertDialog.Builder(this);
         String[] items = new String[]{"Itu", "Salto"};
@@ -330,6 +348,73 @@ public class MainActivity extends AppCompatActivity
         builder.show();
     }
 
+    private void configureFilters() {
+        proximityManager.filters().eddystoneUidFilter(new UIDFilter() {
+            @Override
+            public boolean apply(EddystoneUIDAdvertisingPacket eddystoneUIDAdvertisingPacket) {
+                eddystoneUIDAdvertisingPacket.getNamespaceId();
+                return false;
+            }
+        });
+
+        proximityManager.filters().iBeaconFilter(IBeaconFilters.newDeviceNameFilter("JonSnow"));
+    }
+
+    private void configureListeners() {
+        proximityManager.setIBeaconListener(createIBeaconListener());
+        proximityManager.setEddystoneListener(createEddystoneListener());
+        //proximityManager.setScanStatusListener(createScanStatusListener());
+    }
+
+    private void configureProximityManager() {
+        proximityManager.configuration()
+                .scanMode(ScanMode.LOW_LATENCY)
+                .scanPeriod(ScanPeriod.create(TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(20)))
+                .activityCheckConfiguration(ActivityCheckConfiguration.MINIMAL)
+                .monitoringEnabled(false);
+    }
+
+    private void configureSpaces() {
+        IBeaconRegion region = new BeaconRegion.Builder()
+                .setIdentifier("All my iBeacons")
+                .setProximity(UUID.fromString("123e4567-e89b-12d3-a456-426655440000"))
+                .build();
+
+        proximityManager.spaces().iBeaconRegion(region);
+    }
+
+    private void connectToService() {
+//        beaconManager.connect(new ServiceReadyCallback() {
+//            @Override
+//            public void onServiceReady() {
+//                try {
+//                    beaconManager.startRangingAndDiscoverDevice(ALL_BEACONS_REGION);
+//                } catch (RemoteException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+    }
+
+    private EddystoneListener createEddystoneListener() {
+        return new SimpleEddystoneListener() {
+            @Override
+            public void onEddystoneDiscovered(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
+                Log.i("Sample", "Eddystone discovered: " + eddystone.getUniqueId());
+            }
+        };
+    }
+
+    private IBeaconListener createIBeaconListener() {
+        return new SimpleIBeaconListener() {
+            @Override
+            public void onIBeaconDiscovered(IBeaconDevice ibeacon, IBeaconRegion region) {
+                Log.i("Sample", "IBeacon discovered: " + ibeacon.getUniqueId());
+            }
+        };
+    }
+
     private void initiateCustomerCall(String phone) {
         Intent callIntent = new Intent(Intent.ACTION_DIAL);
         callIntent.setData(Uri.parse("tel:" + phone));
@@ -344,6 +429,15 @@ public class MainActivity extends AppCompatActivity
             return;
         }
         startActivity(callIntent);
+    }
+
+    private void startScanning() {
+        proximityManager.connect(new OnServiceReadyListener() {
+            @Override
+            public void onServiceReady() {
+                proximityManager.startScanning();
+            }
+        });
     }
 
     private void sendCustomerEmail() {
